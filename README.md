@@ -1,66 +1,62 @@
-# feed
+# Quarkus Reactive Application with Azure Translator
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a reactive application built with Quarkus that integrates the Azure Translator. The application has three main endpoints:
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+- **Create a Post** (POST) - Creates a new post.
+- **Get All Posts** (GET) - Returns all posts.
+- **Get by Author** (GET) - Returns posts filtered by author.
 
-## Running the application in dev mode
+## Technologies used
 
-You can run your application in dev mode that enables live coding using:
+- Quarkus
+- Reactive Panache
+- Azure Translator API
 
-```shell script
-./mvnw compile quarkus:dev
-```
+## Prerequisites
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+- JDK 11+
+- Maven
+- Azure account with access to Translator API
 
-## Packaging and running the application
+## How to run
 
-The application can be packaged using:
+1. Clone:
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   cd <NOME_DA_PASTA>
+   ```
 
-```shell script
-./mvnw package
-```
+2. Configure environment variables by creating a .env:
+   ```.env
+   TRANSLATOR_API_KEY=yourapikey
+   ```
+3. Run
+   ```bash
+   ./mvnw compile quarkus:dev
+   ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+## Endpoints
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+Create post:
+   ```http
+   POST http://localhost:8081/posts
+   ```
+   ```json
+   {
+    "content": "My post",
+    "author": "author"
+   }
+   ```
 
-If you want to build an _über-jar_, execute the following command:
+Fetch all posts:
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+   ```http
+   GET http://localhost:8081/posts?targetLang=pt
+   ```
 
-## Creating a native executable
+Fetch posts by its author:
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/feed-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- MongoDB client ([guide](https://quarkus.io/guides/mongodb)): Connect to MongoDB in either imperative or reactive style
-
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+   ```http
+   GET http://localhost:8081/posts/author/{name}?targetLang=pt
+   ```
