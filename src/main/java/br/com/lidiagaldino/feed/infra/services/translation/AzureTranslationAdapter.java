@@ -1,5 +1,6 @@
 package br.com.lidiagaldino.feed.infra.services.translation;
 
+import jakarta.annotation.PostConstruct;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.azure.ai.translation.text.TextTranslationClient;
@@ -14,20 +15,21 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class AzureTranslationAdapter implements TranslationService {
 
-  @ConfigProperty(name = "quarkus.azure.translator.api-key")
+  @ConfigProperty(name = "azure.translator.api-key")
   private String apiKey;
-  @ConfigProperty(name = "quarkus.azure.translator.region")
+  @ConfigProperty(name = "azure.translator.region")
   private String region;
 
   private TextTranslationClient client;
 
-  public AzureTranslationAdapter() {
+  @PostConstruct
+  public void init() {
     AzureKeyCredential credential = new AzureKeyCredential(apiKey);
     this.client = new TextTranslationClientBuilder()
-        .credential(credential)
-        .region(region)
-        .endpoint("https://api.cognitive.microsofttranslator.com")
-        .buildClient();
+            .credential(credential)
+            .region(region)
+            .endpoint("https://api.cognitive.microsofttranslator.com")
+            .buildClient();
   }
 
   @Override
@@ -38,6 +40,6 @@ public class AzureTranslationAdapter implements TranslationService {
           content
       );
       return translationResult.getTranslations().get(0).getText();
-  });
+  }).onItem().transform(text -> text);
   }
 }

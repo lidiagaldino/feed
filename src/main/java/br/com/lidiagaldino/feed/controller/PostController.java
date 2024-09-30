@@ -32,7 +32,7 @@ public class PostController {
 
 
     @GET
-    public Multi<Post> index() {
+    public Multi<TranslatedPost> index() {
         return findAllPostsUsecase.execute();
     }
 

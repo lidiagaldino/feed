@@ -2,9 +2,11 @@ quarkus:
   mongodb:
     connection-string: mongodb://root:password@localhost:27017
     database: posts
-  azure:
-    translator:
-      api-key: ${TRANSLATOR_API_KEY}
-      region: eastus
   http:
     port: 8081
+
+azure:
+  translator:
+    api-key: ${TRANSLATOR_API_KEY}
+    region: eastus
+
