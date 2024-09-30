@@ -4,11 +4,13 @@ import br.com.lidiagaldino.feed.application.dto.CreatePostDto;
 import br.com.lidiagaldino.feed.application.usecases.CreatePostUsecase;
 import br.com.lidiagaldino.feed.application.usecases.FindAllPostsUsecase;
 import br.com.lidiagaldino.feed.application.usecases.FindPostByAuthorUsecase;
+import br.com.lidiagaldino.feed.controller.params.LanguageQueryParam;
 import br.com.lidiagaldino.feed.domain.entities.Post;
 import br.com.lidiagaldino.feed.domain.entities.TranslatedPost;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -32,14 +34,16 @@ public class PostController {
 
 
     @GET
-    public Multi<TranslatedPost> index() {
-        return findAllPostsUsecase.execute();
+    public Multi<TranslatedPost> index(
+            @Valid @BeanParam LanguageQueryParam languageQueryParam
+            ) {
+        return findAllPostsUsecase.execute(languageQueryParam.getTargetLang());
     }
 
     @GET
     @Path("author/{name}")
-    public Multi<TranslatedPost> findByAuthor(@PathParam("name") String name) {
-        return findPostByAuthorUsecase.execute(name);
+    public Multi<TranslatedPost> findByAuthor(@PathParam("name") String name, @BeanParam LanguageQueryParam languageQueryParam) {
+        return findPostByAuthorUsecase.execute(name, languageQueryParam.getTargetLang());
     }
 
     @POST

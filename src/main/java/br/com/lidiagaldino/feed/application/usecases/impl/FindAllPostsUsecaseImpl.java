@@ -21,9 +21,9 @@ public class FindAllPostsUsecaseImpl implements FindAllPostsUsecase {
     }
 
     @Override
-    public Multi<TranslatedPost> execute() {
+    public Multi<TranslatedPost> execute(String language) {
         return postRepository.findAll()
-                .flatMap(i -> translationService.translate(i.getContent(), "en", "pt")
+                .flatMap(i -> translationService.translate(i.getContent(), language)
                         .onItem().transform(translatedContent -> new TranslatedPost(i, translatedContent)).toMulti()
                 );
     }

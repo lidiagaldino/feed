@@ -19,9 +19,9 @@ public class FindPostByAuthorUsecaseImpl implements FindPostByAuthorUsecase {
     }
 
     @Override
-    public Multi<TranslatedPost> execute(String author) {
+    public Multi<TranslatedPost> execute(String author, String language) {
         return postRepository.findByAuthor(author)
-                .flatMap(i -> translationService.translate(i.getContent(), "en", "pt")
+                .flatMap(i -> translationService.translate(i.getContent(), language)
                         .onItem().transform(translatedContent -> new TranslatedPost(i, translatedContent)).toMulti()
                 );
     }

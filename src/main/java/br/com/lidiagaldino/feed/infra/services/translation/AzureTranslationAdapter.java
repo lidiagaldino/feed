@@ -33,7 +33,7 @@ public class AzureTranslationAdapter implements TranslationService {
   }
 
   @Override
-  public Uni<String> translate(String content, String sourceLang, String targetLang) {
+  public Uni<String> translate(String content, String targetLang) {
     return Uni.createFrom().item(() -> {
       var translationResult = client.translate(
           targetLang,

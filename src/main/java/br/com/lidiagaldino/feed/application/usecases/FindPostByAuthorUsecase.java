@@ -5,5 +5,5 @@ import br.com.lidiagaldino.feed.domain.entities.TranslatedPost;
 import io.smallrye.mutiny.Multi;
 
 public interface FindPostByAuthorUsecase {
-    Multi<TranslatedPost> execute(String author);
+    Multi<TranslatedPost> execute(String author, String language);
 }
