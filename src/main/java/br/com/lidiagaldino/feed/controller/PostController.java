@@ -5,6 +5,7 @@ import br.com.lidiagaldino.feed.application.usecases.CreatePostUsecase;
 import br.com.lidiagaldino.feed.application.usecases.FindAllPostsUsecase;
 import br.com.lidiagaldino.feed.application.usecases.FindPostByAuthorUsecase;
 import br.com.lidiagaldino.feed.domain.entities.Post;
+import br.com.lidiagaldino.feed.domain.entities.TranslatedPost;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
@@ -37,7 +38,7 @@ public class PostController {
 
     @GET
     @Path("author/{name}")
-    public Multi<Post> findByAuthor(@PathParam("name") String name) {
+    public Multi<TranslatedPost> findByAuthor(@PathParam("name") String name) {
         return findPostByAuthorUsecase.execute(name);
     }
 
