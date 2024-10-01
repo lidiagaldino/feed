@@ -2,6 +2,7 @@ package br.com.lidiagaldino.feed.application.usecases.impl;
 
 import br.com.lidiagaldino.feed.application.usecases.FindPostByAuthorUsecase;
 import br.com.lidiagaldino.feed.domain.entities.TranslatedPost;
+import br.com.lidiagaldino.feed.domain.exceptions.NotFoundException;
 import br.com.lidiagaldino.feed.domain.repositories.PostRepository;
 import br.com.lidiagaldino.feed.domain.services.TranslationService;
 import io.smallrye.mutiny.Multi;
@@ -21,6 +22,7 @@ public class FindPostByAuthorUsecaseImpl implements FindPostByAuthorUsecase {
     @Override
     public Multi<TranslatedPost> execute(String author, String language) {
         return postRepository.findByAuthor(author)
+                .onCompletion().ifEmpty().failWith(new NotFoundException("POST_NOT_FOUND"))
                 .flatMap(i -> translationService.translate(i.getContent(), language)
                         .onItem().transform(translatedContent -> new TranslatedPost(i, translatedContent)).toMulti()
                 );
